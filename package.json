@@ -1,0 +1,28 @@
+{
+  "name": "burgers",
+  "version": "1.0.0",
+  "description": "creating a burger program",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TaniaGM/BurgerShack.git"
+  },
+  "keywords": [
+    "burgers",
+    "devour",
+    "new"
+  ],
+  "author": "TaniaGM",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TaniaGM/BurgerShack/issues"
+  },
+  "homepage": "https://github.com/TaniaGM/BurgerShack#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
