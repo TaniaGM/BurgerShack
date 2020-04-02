@@ -1,37 +1,31 @@
-require("dotenv").config();
-const express = require("express");
+// Require these npm packages
+var express = require("express");
+var bodyParser = require("body-parser");
+var methodOverride = require("method-override");
 
-const db = require("./models");
+var port = process.env.PORT || 3000;
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+var app = express();
 
-// Middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(express.static("public"));
+// Serve static content for the app from the "public" directory in the application directory.
+app.use(express.static(process.cwd() + "/public"));
 
-// Routes
-const API = require("./routes/apiRoutes");
-API.api(app);
+app.use(bodyParser.urlencoded({ extended: false }));
 
-const syncOptions = { force: false };
+// Override with POST having ?_method=UPDATE
+app.use(methodOverride("_method"));
 
-// If running a test, set syncOptions.force to true
-// clearing the `testdb`
-if (process.env.NODE_ENV === "test") {
-  syncOptions.force = true;
-}
+// Set Handlebars.
+var exphbs = require("express-handlebars");
 
-// Starting the server, syncing our models ------------------------------------/
-db.sequelize.sync(syncOptions).then(function() {
-  app.listen(PORT, function() {
-    console.log(
-      "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
-      PORT,
-      PORT
-    );
-  });
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+// Import routes and give the server access to them.
+var routes = require("./controllers/burgers_controller.js");
+
+app.use("/", routes);
+
+app.listen(port, function () {
+  console.log("Listening on PORT " + port);
 });
-
-module.exports = app; 
